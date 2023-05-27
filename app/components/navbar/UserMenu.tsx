@@ -2,22 +2,48 @@
 
 import { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
+import { User } from '@prisma/client';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 import useRegisterModalStore from '@/app/hooks/useRegisterModalStore';
+import useLoginModalStore from '@/app/hooks/useLoginModalStore';
 import Avatar from '../Avatar';
 import MenuItem from './MenuItem';
 
-export default function UserMenu() {
+interface Props {
+  currentUser?: User | null;
+}
+
+export default function UserMenu({ currentUser }: Props) {
+  const { refresh } = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const open = useRegisterModalStore((store) => store.open);
+  const openRegisterModal = useRegisterModalStore((store) => store.open);
+  const openLoginModal = useLoginModalStore((store) => store.open);
 
   const handleClick = () => setIsOpen((value) => !value);
 
   const handleOpenRegistryModal = () => {
-    open();
+    openRegisterModal();
     handleClick();
   };
 
+  const handleOpenLoginModal = () => {
+    openLoginModal();
+    handleClick();
+  };
+
+  const handleSignOut = async() => {
+    try {
+      await signOut();
+      toast.success('You signed out');
+      refresh();
+      handleClick();
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
@@ -42,15 +68,31 @@ export default function UserMenu() {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar src={currentUser?.image} />
           </div>
         </button>
       </div>
       {isOpen && (
         <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
-            <MenuItem label="Login" onClick={() => (undefined)} />
-            <MenuItem label="Sign up" onClick={handleOpenRegistryModal} />
+            {currentUser
+              ? (
+                <>
+                  <MenuItem label="My trips" onClick={() => ''} />
+                  <MenuItem label="My favorites" onClick={() => ''} />
+                  <MenuItem label="My reservations" onClick={() => ''} />
+                  <MenuItem label="My properties" onClick={() => ''} />
+                  <MenuItem label="Airbnb my home" onClick={() => ''} />
+                  <hr />
+                  <MenuItem label="Sign out" onClick={handleSignOut} />
+                </>
+              )
+              : (
+                <>
+                  <MenuItem label="Login" onClick={handleOpenLoginModal} />
+                  <MenuItem label="Sign up" onClick={handleOpenRegistryModal} />
+                </>
+              )}
           </div>
         </div>
       )}

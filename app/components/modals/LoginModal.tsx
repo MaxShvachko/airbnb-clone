@@ -1,32 +1,31 @@
 'use client';
 
-import axios from 'axios';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { AiFillGithub } from 'react-icons/ai';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-import { signIn } from 'next-auth/react';
 
 import useRegisterModalStore from '@/app/hooks/useRegisterModalStore';
-import useLoginModalStore from '@/app/hooks/useLoginModalStore';
-import { API_ROUTES } from '@/app/constants/routes';
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
+import { toast } from 'react-hot-toast';
 import Button from '../Button';
+import useLoginModalStore from '@/app/hooks/useLoginModalStore';
+import { useRouter } from 'next/navigation';
 
 const DEFAULT_FORM_VALUES = {
-  name: '',
   email: '',
   password: ''
 };
 
-export default function RegisterModal() {
+export default function LoginModal() {
+  const { refresh } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const isOpen = useRegisterModalStore((store) => store.isOpen);
-  const openLoginModal = useLoginModalStore((store) => store.open);
-  const close = useRegisterModalStore((store) => store.close);
+  const isOpen = useLoginModalStore((store) => store.isOpen);
+  const openRegisterModal = useRegisterModalStore((store) => store.open);
+  const close = useLoginModalStore((store) => store.close);
 
   const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
     defaultValues: DEFAULT_FORM_VALUES
@@ -35,7 +34,15 @@ export default function RegisterModal() {
   const handleSubmitForm: SubmitHandler<FieldValues> = async(data) => {
     try {
       setIsLoading(true);
-      await axios.post(API_ROUTES.REGISTER, data);
+      const response = await signIn('credentials', { redirect: false, ...data });
+
+      if (response?.error) {
+        toast.error(response?.error);
+        return;
+      }
+
+      toast.success('Logged in');
+      refresh();
       close();
     } catch (error) {
       toast.error((error as ErrorResponse)?.response?.data?.error || (error as Error).message);
@@ -44,12 +51,12 @@ export default function RegisterModal() {
     }
   };
 
-  const handleOpenLogInModal = () => {
+  const handleOpeRegisterInModal = () => {
     close();
-    openLoginModal();
+    openRegisterModal();
   };
 
-  const handleThirdPartyRegister = (provider: 'github' | 'google') => async() => {
+  const handleThirdPartyLogin = (provider: 'github' | 'google') => async() => {
     try {
       setIsLoading(true);
       const response = await signIn(provider);
@@ -68,22 +75,14 @@ export default function RegisterModal() {
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Welcome to Airbnb"
-        subTitle="Create an account!"
+        title="Welcome back"
+        subTitle="Login to your account!"
       />
       <Input
         errors={errors}
         label="Email"
         register={register}
         id="email"
-        disabled={isLoading}
-        required
-      />
-      <Input
-        errors={errors}
-        label="Name"
-        register={register}
-        id="name"
         disabled={isLoading}
         required
       />
@@ -105,20 +104,20 @@ export default function RegisterModal() {
         outline
         label="Continue with google"
         icon={FcGoogle}
-        onClick={handleThirdPartyRegister('google')}
+        onClick={handleThirdPartyLogin('google')}
       />
       <Button
         outline
         label="Continue with github"
         icon={AiFillGithub}
-        onClick={handleThirdPartyRegister('github')}
+        onClick={handleThirdPartyLogin('github')}
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex flex-row items-center justify-center gap 2">
-          <span>Already have an account?</span>
+          <span>Haven`t an account?</span>
           &nbsp;
-          <button onClick={handleOpenLogInModal} className="text-neutral-800 hover:underline">
-            Log in
+          <button onClick={handleOpeRegisterInModal} className="text-neutral-800 hover:underline">
+            Register now
           </button>
         </div>
       </div>
@@ -130,7 +129,7 @@ export default function RegisterModal() {
       isOpen={isOpen}
       isDisabled={isLoading}
       onClose={close}
-      title="Register"
+      title="Login"
       actionLabel="Continue"
       body={bodyContent}
       footer={footerContent}
