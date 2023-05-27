@@ -25,7 +25,6 @@ export default function Input({
   required,
   type = 'text'
 }: Props) {
-  console.log(errors, 'errors');
   return (
     <div className="w-full relative">
       {isFormatPrice && <BiDollar size={24} className="text-neutral-700 absolute top-5 left-2" />}

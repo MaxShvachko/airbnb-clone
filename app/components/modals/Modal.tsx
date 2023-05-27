@@ -25,6 +25,7 @@ export default function Modal({
   body,
   title,
   isOpen,
+  footer,
   onClose,
   onSubmit,
   isDisabled,
@@ -93,7 +94,7 @@ export default function Modal({
         >
           <div
             className={clsx(`
-              translate duration-${MODAL_CLOSE_DURATION} h-full`,
+              translate duration-300 h-full`,
             isShowModal && 'translate-y-0 opacity-100',
             !isShowModal && 'translate-y-full opacity-0'
             )}
@@ -145,6 +146,7 @@ export default function Modal({
                     disabled={isDisabled}
                   />
                 </div>
+                {footer}
               </div>
             </div>
           </div>
