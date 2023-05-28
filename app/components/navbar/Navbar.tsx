@@ -1,16 +1,27 @@
 'use client';
 
 import { User } from '@prisma/client';
+import dynamic from 'next/dynamic';
+
 import Container from '../Container';
 import Logo from './Logo';
 import Search from './Search';
 import UserMenu from './UserMenu';
+import { usePathname } from 'next/navigation';
+import { ROUTES } from '@/app/constants/routes';
+import { useMemo } from 'react';
+
+const Categories = dynamic(() => import('./Categories'));
 
 interface Props {
   currentUser?: User | null;
 }
 
 export default function Navbar({ currentUser }: Props) {
+  const pathName = usePathname();
+
+  const isMainPage = useMemo(() => pathName === ROUTES.HOME, [pathName]);
+
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div className="py-4 border-b-[1px]">
@@ -31,6 +42,7 @@ export default function Navbar({ currentUser }: Props) {
           </div>
         </Container>
       </div>
+      {isMainPage && <Categories />}
     </div>
   );
 }
