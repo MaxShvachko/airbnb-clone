@@ -1,4 +1,5 @@
 import { Nunito } from 'next/font/google';
+import dynamic from 'next/dynamic';
 
 import Navbar from '@/app/components/navbar/Navbar';
 import RegisterModal from './components/modals/RegisterModal';
@@ -6,6 +7,8 @@ import ToasterProvider from './providers/ToasterProvider';
 import LoginModal from './components/modals/LoginModal';
 import getCurrentUser from './actions/getCurrentUser';
 import './globals.css';
+
+const RentModal = dynamic(() => import('./components/modals/RentModal'));
 
 const font = Nunito({ subsets: ['latin'] });
 
@@ -25,6 +28,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={font.className}>
         <ToasterProvider />
+        {Boolean(currentUser) && <RentModal />}
         <RegisterModal />
         <LoginModal />
         <Navbar currentUser={currentUser} />

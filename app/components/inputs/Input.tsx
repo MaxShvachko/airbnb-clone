@@ -27,7 +27,7 @@ export default function Input({
 }: Props) {
   return (
     <div className="w-full relative">
-      {isFormatPrice && <BiDollar size={24} className="text-neutral-700 absolute top-5 left-2" />}
+      {isFormatPrice && <BiDollar size={24} className="text-neutral-700 absolute top-6 left-2" />}
       <input
         id={id}
         disabled={disabled}
