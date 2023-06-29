@@ -32,7 +32,7 @@ export async function POST(
     return new Response(JSON.stringify({ error: 'You must fill all required data' }), { status: 422 });
   }
 
-  const listing = await prisma.listining.create({
+  const listing = await prisma.listing.create({
     data: {
       bathroomCount,
       userId: currentUser.id,
