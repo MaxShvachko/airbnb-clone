@@ -6,5 +6,6 @@ export const API_ROUTES = {
 };
 
 export const ROUTES = {
-  HOME: '/'
+  HOME: '/',
+  LISTING: (id?: string) => `/listing/${id}`
 };

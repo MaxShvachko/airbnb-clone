@@ -34,7 +34,7 @@ export default function Button({
           transition
           w-full
         `,
-        outline && 'bg-white border-black text-black',
+        outline && 'bg-white border-black text-black hover:bg-slate-100',
         !outline && 'bg-rose-500 border-rose-500 text-white',
         small && 'py-1 text-sm font-light border-[1px]',
         !small && 'py-3 text-md font-semibold border-2'
