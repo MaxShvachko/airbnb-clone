@@ -8,7 +8,6 @@ export default async function Home() {
   const listings = await getListings();
   const currentUser = await getCurrentUser();
 
-  console.log(listings, 'listings');
   if (!listings?.length) {
     return (
       <EmptyState showReset />

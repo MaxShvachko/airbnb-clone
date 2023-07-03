@@ -13,13 +13,11 @@ const RentModal = dynamic(() => import('./components/modals/RentModal'));
 const font = Nunito({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Airbnb',
-  description: 'Airbnb clone'
+  title: 'Vacation Homes & Condo Rentals - Airbnb',
+  description: 'Find the perfect place to stay at an amazing price in 191 countries. Belong anywhere with Airbnb.'
 };
 
-export default async function RootLayout({
-  children
-}: {
+export default async function RootLayout({ children }: {
   children: React.ReactNode
 }) {
   const currentUser = await getCurrentUser();
