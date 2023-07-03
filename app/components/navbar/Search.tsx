@@ -19,7 +19,7 @@ export default function Search() {
     >
       <div className="flex flex-row items-center justify-between">
         <div className="text-sm font-semibold px-6">
-          Answer
+          Anywhere
         </div>
         <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">
           Any week

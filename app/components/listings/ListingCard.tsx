@@ -1,7 +1,7 @@
 'use client';
 
 import { Listing, Reservation, User } from '@prisma/client';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import useCountries from '@/app/hooks/useCountries';
 import { useMemo } from 'react';
@@ -30,7 +30,6 @@ export default function ListingCard({
   actionLabel,
   reservation
 }: Props) {
-  const { push } = useRouter();
   const { getByValue } = useCountries();
 
   const location = useMemo(() => (
@@ -44,8 +43,6 @@ export default function ListingCard({
 
     onAction?.(actionId);
   };
-
-  const handleRedirectToListing = () => push(ROUTES.LISTING(data.id));
 
   const price = useMemo(() => {
     if (reservation) return reservation.totalPrice;
@@ -61,10 +58,10 @@ export default function ListingCard({
 
     return `${format(start, 'PP')} - ${format(end, 'PP ')}`;
   }, [reservation]);
-  console.log(location, 'location');
+
   return (
     <div
-      className="col-span-1 cursor-pointer group"
+      className="col-span-1 group"
     >
       <div className="flex flex-col gap-2 w-full">
         <div
@@ -76,52 +73,57 @@ export default function ListingCard({
           rounded-xl
         "
         >
-          <Image
-            fill
-            onClick={handleRedirectToListing}
-            className="
+          <Link href={ROUTES.LISTING(data.id)}>
+            <Image
+              fill
+              className="
             object-cover
             h-full
             w-full
+            cursor-pointer
             group-hover:scale-110
             transition
           "
-            src={data.imageSrc}
-            alt="Listing"
-          />
+              src={data.imageSrc}
+              alt="Listing"
+            />
+          </Link>
           <div className="
-          absolute
-          top-3
-          right-3
-        ">
+            absolute
+            top-3
+            right-3
+          "
+          >
             <HeartButton
               listingId={data.id}
               currentUser={currentUser}
             />
           </div>
         </div>
-        <div className="font-semibold text-lg">
-          {location?.region}, {location?.label}
-        </div>
-        <div className="font-light text-neutral-500">
-          {reservationDate || data.category}
-        </div>
-        <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">
-            $ {price}
+        <div className="flex flex-col w-full">
+          <div className="font-semibold text-md">
+            {location?.region}, {location?.label}
+            d</div>
+          <div className="font-light text-neutral-500">
+            {reservationDate || data.category}
           </div>
-          {!reservation && (
-            <div className="font-light">night</div>
+          <div className="flex flex-row items-center gap-1">
+            <div className="font-semibold text-sm">
+              $ {price}
+            </div>
+            {!reservation && (
+              <div className="font-light">night</div>
+            )}
+          </div>
+          {onAction && actionLabel && (
+            <Button
+              disabled={disabled}
+              small
+              label={actionLabel}
+              onClick={handleCancel}
+            />
           )}
         </div>
-        {onAction && actionLabel && (
-          <Button
-            disabled={disabled}
-            small
-            label={actionLabel}
-            onClick={handleCancel}
-          />
-        )}
       </div>
     </div>
   );
