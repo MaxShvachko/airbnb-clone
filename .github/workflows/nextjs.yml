@@ -84,6 +84,15 @@ jobs:
 
   # Deployment job
   deploy:
+    env:
+      NEXT_PUBLIC_GITHUB_SECRET: ${{ env.NEXT_PUBLIC_GITHUB_SECRET }}
+      NEXT_PUBLIC_GITHUB_ID: ${{ env.NEXT_PUBLIC_GITHUB_ID }}
+      GOOGLE_CLIENT_ID: ${{ env.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ env.GOOGLE_CLIENT_SECRET }}
+      DATABASE_URL: ${{ env.DATABASE_URL }}
+      NEXTAUTH_SECRET: ${{ env.NEXTAUTH_SECRET }}
+      NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+      NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: ${{ env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
