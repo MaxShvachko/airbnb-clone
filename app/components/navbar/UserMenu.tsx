@@ -12,13 +12,14 @@ import useRentModalStore from '@/app/hooks/useRentModalStore';
 import useLoginModalStore from '@/app/hooks/useLoginModalStore';
 import Avatar from '../Avatar';
 import MenuItem from './MenuItem';
+import { ROUTES } from '@/app/constants/routes';
 
 interface Props {
   currentUser?: User | null;
 }
 
 export default function UserMenu({ currentUser }: Props) {
-  const { refresh } = useRouter();
+  const { refresh, push } = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const openRegisterModal = useRegisterModalStore((store) => store.open);
   const openLoginModal = useLoginModalStore((store) => store.open);
@@ -97,9 +98,9 @@ export default function UserMenu({ currentUser }: Props) {
             {currentUser
               ? (
                 <>
-                  <MenuItem label="My trips" onClick={() => ''} />
-                  <MenuItem label="My favorites" onClick={() => ''} />
-                  <MenuItem label="My reservations" onClick={() => ''} />
+                  <MenuItem label="My trips" onClick={() => push(ROUTES.TRIPS)} />
+                  <MenuItem label="My favorites" onClick={() => push(ROUTES.FAVORITES)} />
+                  <MenuItem label="My reservations" onClick={() => push(ROUTES.RESERVATIONS)} />
                   <MenuItem label="My properties" onClick={() => ''} />
                   <MenuItem label="Airbnb my home" onClick={handleOpenRentalModalFromMenu} />
                   <hr />

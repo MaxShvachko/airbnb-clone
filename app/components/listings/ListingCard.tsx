@@ -73,7 +73,7 @@ export default function ListingCard({
           rounded-xl
         "
         >
-          <Link href={ROUTES.LISTING(data.id)}>
+          <Link href={ROUTES.LISTINGS(data.id)}>
             <Image
               fill
               className="
@@ -100,7 +100,7 @@ export default function ListingCard({
             />
           </div>
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full gap-1">
           <div className="font-semibold text-md">
             {location?.region}, {location?.label}
             d</div>

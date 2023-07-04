@@ -37,6 +37,7 @@ export default function RegisterModal() {
       setIsLoading(true);
       await axios.post(API_ROUTES.REGISTER, data);
       close();
+      openLoginModal();
     } catch (error) {
       toast.error((error as ErrorResponse)?.response?.data?.error || (error as Error).message);
     } finally {
