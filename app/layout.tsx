@@ -6,6 +6,7 @@ import RegisterModal from './components/modals/RegisterModal';
 import ToasterProvider from './providers/ToasterProvider';
 import LoginModal from './components/modals/LoginModal';
 import getCurrentUser from './actions/getCurrentUser';
+import SearchModal from './components/modals/SearchModal';
 import './globals.css';
 
 const RentModal = dynamic(() => import('./components/modals/RentModal'));
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }: {
         {Boolean(currentUser) && <RentModal />}
         <RegisterModal />
         <LoginModal />
+        <SearchModal />
         <Navbar currentUser={currentUser} />
         <div className="pb-20 pt-28">
           {children}

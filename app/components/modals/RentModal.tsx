@@ -82,7 +82,7 @@ export default function RentModal() {
 
     try {
       setIsLoading(true);
-      await axios.post(API_ROUTES.LISTINGS, data);
+      await axios.post(API_ROUTES.LISTINGS(), data);
       toast.success('Listing Created!');
       refresh();
       reset();

@@ -101,7 +101,7 @@ export default function UserMenu({ currentUser }: Props) {
                   <MenuItem label="My trips" onClick={() => push(ROUTES.TRIPS)} />
                   <MenuItem label="My favorites" onClick={() => push(ROUTES.FAVORITES)} />
                   <MenuItem label="My reservations" onClick={() => push(ROUTES.RESERVATIONS)} />
-                  <MenuItem label="My properties" onClick={() => ''} />
+                  <MenuItem label="My properties" onClick={() => push(ROUTES.PROPERTIES)} />
                   <MenuItem label="Airbnb my home" onClick={handleOpenRentalModalFromMenu} />
                   <hr />
                   <MenuItem label="Sign out" onClick={handleSignOut} />

@@ -17,8 +17,6 @@ export default async function ListingPage({ params }: { params: Props }) {
     return <EmptyState />;
   }
 
-  console.log(listing, '');
-
   return (
     <Listing
       listing={listing}

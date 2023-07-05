@@ -9,7 +9,6 @@ export interface Props {
   title: string;
   subTitle: string;
   onChange: (name: string, value: number) => void;
-
 }
 
 export default function Counter({
