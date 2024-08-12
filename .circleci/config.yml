@@ -27,12 +27,12 @@ commands:
     steps:
       - run:
           name: Validating TypeScript
-          command: yarn tsc
+          command: npm run tsc
   linters-command:
     steps:
       - run:
           name: Running linters
-          command: yarn lint
+          command: npm run lint
 
 jobs:
   typescript:
@@ -50,6 +50,4 @@ workflows:
   main:
     jobs:
       - typescript
-      - linters:
-          requires:
-            - typescript
+      - linters
