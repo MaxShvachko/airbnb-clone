@@ -1,0 +1,53 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/airbnb-clone
+    docker:
+      - image: cimg/node:22.6.0
+
+caches:
+  - &npm_cache airbnb-clone-v1-{{ checksum "package-lock.json" }}
+
+commands:
+  defaults:
+    steps:
+      - checkout
+      - restore_cache:
+          key: *npm_cache
+      - run:
+          name: Installing Dependencies
+          command: npm install
+      - save_cache:
+          key: *npm_cache
+          paths:
+            - ./node_modules
+
+  typescript-command:
+    steps:
+      - run:
+          name: Validating TypeScript
+          command: npm run tsc
+  linters-command:
+    steps:
+      - run:
+          name: Running linters
+          command: npm run lint
+
+jobs:
+  typescript:
+    executor: default
+    steps:
+      - defaults
+      - typescript-command
+  linters:
+    executor: default
+    steps:
+      - defaults
+      - linters-command
+
+workflows:
+  main:
+    jobs:
+      - typescript
+      - linters
