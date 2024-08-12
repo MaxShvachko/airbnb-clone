@@ -7,19 +7,19 @@ executors:
       - image: cimg/node:22.6.0
 
 caches:
-  - &yarn_cache airbnb-clone-v1-{{ checksum "yarn.lock" }}
+  - &npm_cache airbnb-clone-v1-{{ checksum "package-lock.json" }}
 
 commands:
   defaults:
     steps:
       - checkout
       - restore_cache:
-          key: *yarn_cache
+          key: *npm_cache
       - run:
           name: Installing Dependencies
-          command: yarn install
+          command: npm install
       - save_cache:
-          key: *yarn_cache
+          key: *npm_cache
           paths:
             - ./node_modules
 
